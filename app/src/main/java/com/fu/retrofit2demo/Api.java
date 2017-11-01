@@ -1,10 +1,10 @@
 package com.fu.retrofit2demo;
 
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -48,6 +48,7 @@ public interface Api {
      * 3.GET请求带有查询参数的URL，@Query("id")定义URL中的参数
      * 如: http://192.168.0.123/users?id=2
      * 参数中需要用@Query来声明
+     *
      * @param id
      * @return
      */
@@ -58,6 +59,7 @@ public interface Api {
      * 4.POST请求带有查询参数的URL，@Query("name")定义URL中的参数
      * post请求的参数就不会拼接到url里了，在请求头里的
      * 参数中需要用@Query()来声明
+     *
      * @param name
      * @return
      */
@@ -67,6 +69,7 @@ public interface Api {
     /**
      * 5.以Post的请求方式，向服务器传入json字符串
      * 参数中需要用@Body来声明是传入的是对象
+     *
      * @param user
      * @return
      */
@@ -75,6 +78,7 @@ public interface Api {
 
     /**
      * 6.以表单的方式传递键值对
+     *
      * @param name
      * @param password
      * @return
@@ -83,8 +87,24 @@ public interface Api {
     @FormUrlEncoded
     Call<ResponseBody> login2(@Field("username") String name, @Field("password") String password);
 
+    /**
+     * 7.单文件上传
+     *
+     * @param phot
+     * @param username
+     * @param password
+     * @return
+     */
     @Multipart
     @POST("registerUser")
     Call<ResponseBody> registerUser(@Part MultipartBody.Part phot, @Part("username") RequestBody username,
-                                 @Part("username") RequestBody password);
+                                    @Part("username") RequestBody password);
+
+    /**
+     * 8.与RxJava配合使用,返回的就是Observable(被观察者)
+     * @param username
+     * @return
+     */
+    @GET("user/{username}")
+    Observable<User> getUser2(@Path("username") String username);
 }
